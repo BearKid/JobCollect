@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+    <context:property-placeholder location="classpath:profiles/${profile.env}/jdbc.properties"/>
+
+    <!--<bean id="downJobDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
+        <!--<property name="driverClassName" value="${jdbc.downjob.driverClassName}"/>-->
+        <!--<property name="url" value="${jdbc.downjob.url}"/>-->
+        <!--<property name="username" value="${jdbc.downjob.username}"/>-->
+        <!--<property name="password" value="${jdbc.downjob.password}"/>-->
+        <!--<property name="timeBetweenEvictionRunsMillis" value="3600000"/>-->
+        <!--<property name="minEvictableIdleTimeMillis" value="14400000"/>-->
+    <!--</bean>-->
+    <bean id="downJobDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close" lazy-init="true">
+        <property name="driverClass" value="${jdbc.downjob.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.downjob.url}"/>
+        <property name="username" value="${jdbc.downjob.username}"/>
+        <property name="password" value="${jdbc.downjob.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.downjob.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.downjob.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.downjob.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <!-- config for collect.fix.ImportJobs -->
+    <bean id="downJobDevDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close" lazy-init="true">
+        <property name="driverClass" value="${jdbc.downjobDev.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.downjobDev.url}"/>
+        <property name="username" value="${jdbc.downjobDev.username}"/>
+        <property name="password" value="${jdbc.downjobDev.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.downjobDev.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.downjobDev.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.downjobDev.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+    <bean id="downJobProdDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close" lazy-init="true">
+        <property name="driverClass" value="${jdbc.downjobProd.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.downjobProd.url}"/>
+        <property name="username" value="${jdbc.downjobProd.username}"/>
+        <property name="password" value="${jdbc.downjobProd.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.downjobProd.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.downjobProd.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.downjobProd.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+    <!-- config for collect.fix.ImportJobs END -->
+</beans>
